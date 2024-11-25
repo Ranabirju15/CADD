@@ -3,7 +3,7 @@
 # ********Convert Gromacst Topogoly and Trajectory files into Amber format*********
 
 # Modify your input Gromacs file (structure file: .gro, trajectory: .xtc, topology file: .xtc) names.
-# Also, copy the amber force field field into the current directory. 
+# Also, copy the amber force field (ff) into the current directory and update the ff name in line no: 13. 
 # Which can be found default: /usr/local/gromacs/share/gromacs/top/ 
 
 # Define filenames (edit as necessary)
