@@ -18,8 +18,6 @@ fi
 PC1_OUTPUT="pc1.pdb"
 PC2_OUTPUT="pc2.pdb"
 PCA_SCORES="PCA_scores.csv"
-B_FACTORS_OUTPUT="b_factors.pdb"
-B_FACTORS_CSV="b_factors.csv"
 
 echo "Using DCD file: $DCD_FILE"
 echo "Using PDB file: $PDB_FILE"
@@ -72,24 +70,6 @@ pc1 <- pc\$z[,1]
 pc2 <- pc\$z[,2]
 df <- data.frame(PC1=pc1, PC2=pc2)
 write.csv(df, file="$PCA_SCORES")
-
-# B-factor calculation
-# Mean square fluctuations (MSFs) from selected PCs
-msf <- rowSums(pc\$z[, 1:10]^2)  # Use first 10 PCs
-b_factors <- 8 * pi^2 * msf      # Convert MSFs to B-factors
-
-# Assign B-factors to the selected CA atoms only
-pdb\$atom\$b[ca.inds\$atom] <- b_factors
-
-# Update PDB file and save
-write.pdb(pdb, file="$B_FACTORS_OUTPUT")
-
-# Save B-factors as CSV for reference
-write.csv(data.frame(Residue=ca.inds\$atom, B_Factor=b_factors), file="$B_FACTORS_CSV")
-
-# Plot B-factors
-plot(b_factors, type="h", xlab="Residue Index (CA only)", ylab="B-factor", main="B-factors from PCA")
-EOF
 EOF
 
 # Run the R script
@@ -105,8 +85,6 @@ if [ -f "$PC1_OUTPUT" ] && [ -f "$PC2_OUTPUT" ] && [ -f "$PCA_SCORES" ] && [ -f 
     echo "  PCA trajectory (PC1): $PC1_OUTPUT"
     echo "  PCA trajectory (PC2): $PC2_OUTPUT"
     echo "  PCA scores: $PCA_SCORES"
-    echo "  B-factor PDB: $B_FACTORS_OUTPUT"
-    echo "  B-factors CSV: $B_FACTORS_CSV"
 else
     echo "Analysis failed. Check the R script output for details."
 fi
